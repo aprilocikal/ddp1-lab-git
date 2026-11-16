@@ -4,19 +4,50 @@
  */
 import webpush from 'web-push';
 
-const VAPID_PUBLIC_KEY = process.env.VAPID_PUBLIC_KEY;
-const VAPID_PRIVATE_KEY = process.env.VAPID_PRIVATE_KEY;
-const VAPID_EMAIL = process.env.VAPID_EMAIL || 'mailto:admin@example.com';
+let vapidConfigured = false;
 
-// Configure VAPID
-if (VAPID_PUBLIC_KEY && VAPID_PRIVATE_KEY) {
-  webpush.setVapidDetails(VAPID_EMAIL, VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY);
+function ensureVapidConfigured() {
+  if (vapidConfigured) return true;
+
+  let pubKey = process.env.VAPID_PUBLIC_KEY || '';
+  let privKey = process.env.VAPID_PRIVATE_KEY || '';
+  let email = process.env.VAPID_EMAIL || 'mailto:admin@example.com';
+
+  // Sanitize: strip accidental "KEY=" prefix, wrapping quotes, and whitespace
+  if (pubKey.includes('=')) {
+    pubKey = pubKey.split('=').pop() || '';
+  }
+  if (privKey.includes('=')) {
+    privKey = privKey.split('=').pop() || '';
+  }
+
+  pubKey = pubKey.trim().replace(/^["']|["']$/g, '');
+  privKey = privKey.trim().replace(/^["']|["']$/g, '');
+  email = email.trim().replace(/^["']|["']$/g, '');
+
+  if (!pubKey || !privKey) {
+    return false;
+  }
+
+  try {
+    webpush.setVapidDetails(email, pubKey, privKey);
+    vapidConfigured = true;
+    return true;
+  } catch (err) {
+    console.warn('VAPID configuration warning:', err.message);
+    return false;
+  }
 }
 
 /**
  * Send a push notification to a subscription
  */
 export async function sendNotification(subscription, payload) {
+  if (!ensureVapidConfigured()) {
+    console.warn('VAPID is not configured properly, skipping push notification');
+    return { success: false, error: 'VAPID not configured' };
+  }
+
   try {
     const data = JSON.stringify(payload);
     await webpush.sendNotification(subscription, data);
@@ -51,20 +82,18 @@ export async function notifyGradeChange(subscription, courseName, grade, courseI
 }
 
 /**
- * Send notification about upcoming events
+ * Send notification about upcoming deadlines
  */
-export async function notifyUpcomingEvent(subscription, eventName, courseName, timeLeft, eventUrl) {
+export async function notifyUpcomingDeadline(subscription, eventName, courseName, timeLeft, eventId) {
   return sendNotification(subscription, {
-    title: '⏰ Deadline Mendekat!',
-    body: `${eventName} (${courseName}) — ${timeLeft}`,
+    title: `⏰ Deadline: ${eventName}`,
+    body: `${courseName} — ${timeLeft}`,
     icon: '/icons/icon-192.png',
     badge: '/icons/icon-192.png',
-    tag: `event-${eventName}`,
+    tag: `deadline-${eventId}`,
     data: {
-      type: 'event',
-      url: eventUrl || '/dashboard?tab=events',
+      type: 'deadline',
+      url: '/dashboard?tab=events',
     },
   });
 }
-
-export { VAPID_PUBLIC_KEY };
