@@ -267,7 +267,7 @@ function CoursePageInner() {
       <div style={{ maxWidth: 480, margin: '0 auto', background: '#fff', minHeight: '100vh', position: 'relative' }}>
       {/* Header */}
       <div style={{
-        background: 'linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.4) 100%), url(https://enrollment-api.ui.ac.id/uploads/20250922072406_Edited-9722.jpg) center/cover',
+        background: 'linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.4) 100%), url(https://enrollment-api.ui.ac.id/uploads/20250922072406_Edited-9722.jpg) center 35% / cover no-repeat',
         padding: '3rem 1.25rem 2rem',
       }}>
         <button
