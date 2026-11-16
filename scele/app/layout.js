@@ -8,8 +8,13 @@ const inter = Inter({
   display: "swap",
 });
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL
+  || (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : null)
+  || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
+
 export const metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'),
+  metadataBase: new URL(siteUrl),
+  manifest: "/manifest.json",
   title: "SCELE Notif — Notifikasi Akademik",
   description:
     "PWA untuk notifikasi akademik SCELE Universitas Indonesia. Pantau nilai, deadline tugas, dan upcoming events langsung dari HP.",
@@ -41,7 +46,14 @@ export default function RootLayout({ children }) {
   return (
     <html lang="id" className={inter.variable}>
       <head>
+        <link rel="manifest" href="/manifest.json" />
         <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+        <link rel="apple-touch-icon" sizes="192x192" href="/icons/icon-192.png" />
+        <link rel="apple-touch-icon" sizes="512x512" href="/icons/icon-512.png" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-title" content="SCELE Notif" />
+        <meta name="mobile-web-app-capable" content="yes" />
       </head>
       <body>
         <ServiceWorkerRegister />

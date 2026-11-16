@@ -4,6 +4,8 @@ export default function manifest() {
     short_name: 'SCELE',
     description: 'Notifikasi akademik SCELE — nilai, deadline, dan events',
     start_url: '/',
+    id: '/',
+    scope: '/',
     display: 'standalone',
     background_color: '#ffffff',
     theme_color: '#3b82f6',
