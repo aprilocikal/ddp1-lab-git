@@ -18,7 +18,7 @@ echo [1/2] Menjalankan Backend Python (Port 8000)...
 start "SCELE Python Backend (Port 8000)" cmd /k "cd /d "%~dp0" && "%PY_BIN%" run.py"
 
 echo [2/2] Menjalankan Frontend Web (Port 3000)...
-start "SCELE Frontend (Port 3000)" cmd /k "cd /d "%~dp0frontend" && npm run dev"
+start "SCELE Frontend (Port 3000)" cmd /k "cd /d "%~dp0scele" && npm run dev"
 
 echo.
 echo ===================================================

@@ -11,14 +11,14 @@ data/*.json
 !data/.gitkeep
 .vscode/
 
-# Frontend / Node.js
-frontend/node_modules/
-frontend/.next/
-frontend/out/
-frontend/build/
-frontend/.vercel
-frontend/.env*
-!frontend/.env.example
+# Web Frontend (scele)
+scele/node_modules/
+scele/.next/
+scele/out/
+scele/build/
+scele/.vercel
+scele/.env*
+!scele/.env.example
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
