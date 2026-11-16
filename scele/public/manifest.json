@@ -1,7 +1,7 @@
 {
   "name": "SCELE Notif",
   "short_name": "SCELE",
-  "description": "Notifikasi akademik SCELE — nilai, deadline, dan events",
+  "description": "Notifikasi akademik SCELE - nilai, deadline, dan events",
   "start_url": "/",
   "id": "/",
   "scope": "/",
